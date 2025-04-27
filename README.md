@@ -3,10 +3,10 @@
 - [ ] game
   - [ ] ui
   - [ ] gameplay
-- [-] platform
-  - [-] hot reloading
+- [ ] platform
+  - [ ] hot reloading
     - [ ] wasm target
-    - [-] native target
-      - [-] windows
+    - [ ] native target
+      - [x] windows
       - [ ] linux
 
