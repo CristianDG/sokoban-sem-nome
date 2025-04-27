@@ -1,7 +1,8 @@
 package platform_definitions
 
+Color :: [4]f32
 
-debug_draw_square_t : #type proc(x, y, w, h: i32)
+debug_draw_square_t : #type proc(x, y, width, height: i32, color: Color)
 
 Platform_Functions :: struct {
   debug_draw_square: type_of(debug_draw_square_t)
