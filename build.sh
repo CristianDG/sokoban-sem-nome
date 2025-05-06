@@ -1,10 +1,11 @@
 #!/usr/bin/env sh
-set -euo pipefail
+set -uo pipefail
 
 # windows | linux
 : ${OS_TYPE=windows}
 
-SHARED_FLAGS="-debug -thread-count:4 -error-pos-style:unix"
+SHARED_FLAGS="-debug -thread-count:4 -error-pos-style:unix -define:RAYLIB_SHARED=true -microarch:native -linker:lld"
+datetime=$(date '+%d%m%H%M%S')
 
 build_game_lib ()
 {
@@ -13,7 +14,7 @@ build_game_lib ()
 
   out_file="game_lib$ext"
 
-  odin build game -out:$out_file -build-mode:shared -no-entry-point $SHARED_FLAGS
+  odin build game -out:$out_file $SHARED_FLAGS -build-mode:shared -no-entry-point -extra-linker-flags:"-PDB:game_$datetime.pdb"
 }
 
 build_platform ()
@@ -21,14 +22,13 @@ build_platform ()
   ext=".bin"
   [ $OS_TYPE = "windows" ] && ext=".exe"
 
-  out_file="out$ext"
+  out_file="platform$ext"
 
-  rm *.pdb
-  datetime=$(date '+%d%m%H%M%S')
-
-  odin build platform_raylib.odin -file -out:$out_file $SHARED_FLAGS
+  odin build platforms/platform_raylib.odin -file -out:$out_file $SHARED_FLAGS
 }
 
+rm *.pdb
+rm *.tmp
 build_game_lib
 build_platform
 
