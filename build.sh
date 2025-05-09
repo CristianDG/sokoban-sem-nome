@@ -14,7 +14,10 @@ build_game_lib ()
 
   out_file="game_lib$ext"
 
-  odin build game -out:$out_file $SHARED_FLAGS -build-mode:shared -no-entry-point -extra-linker-flags:"-PDB:game_$datetime.pdb"
+  extra_linker_flags=" "
+  [ $OS_TYPE = "windows" ] && extra_linker_flags+="-PDB:game_$datetime.pdb"
+
+  odin build game -out:$out_file $SHARED_FLAGS -build-mode:shared -no-entry-point -extra-linker-flags:"$extra_linker_flags"
 }
 
 build_platform ()
